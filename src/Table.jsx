@@ -4,26 +4,34 @@ import PlanetsContext from './context';
 function Table() {
   const data = useContext(PlanetsContext);
   const [filter, setFilter] = useState({ filterByName: { name: '' } });
-  const [column, setColumn] = useState('population');
-  const [comparison, setComparison] = useState('maior que');
-  const [valueFilter, setValueFilter] = useState(0);
   const [planets, setPlanets] = useState([]);
+
+  const [values, setValues] = useState({
+    filterByNumericValues: [
+      { column: 'population', comparison: 'maior que', value: '0' },
+    ],
+  });
+  const onChange = ({ target }) => {
+    setValues({ ...values, [target.name]: target.value });
+  };
 
   useEffect(() => {
     setPlanets(data);
   }, [data]);
 
   const handleFilter = () => {
-    const VALUE = parseInt(valueFilter, 10);
+    const { value, column, comparison } = values;
+    const VALUE = parseInt(value, 10);
 
     const planetsFiltered = data.filter((planet) => {
       if (comparison === 'maior que') {
         return planet[column] > VALUE;
-      } if (comparison === 'menor que') {
+      }
+      if (comparison === 'menor que') {
         return planet[column] < VALUE;
       }
 
-      return planet[column] === valueFilter;
+      return planet[column] === value;
     });
 
     setPlanets(planetsFiltered);
@@ -41,11 +49,11 @@ function Table() {
 
       <label htmlFor="options">
         <select
-          name="options"
+          name="column"
           id="options"
           data-testid="column-filter"
-          value={ column }
-          onChange={ ({ target: { value } }) => setColumn(value) }
+          value={ values.filterByNumericValues.column }
+          onChange={ onChange }
         >
           <option value="population">population</option>
           <option value="orbital_period">orbital_period</option>
@@ -54,11 +62,11 @@ function Table() {
           <option value="surface_water">surface_water</option>
         </select>
         <select
-          name="options"
+          name="comparison"
           id="options"
           data-testid="comparison-filter"
-          value={ comparison }
-          onChange={ ({ target: { value } }) => setComparison(value) }
+          value={ values.filterByNumericValues.comparison }
+          onChange={ onChange }
         >
           <option value="maior que">maior que</option>
           <option value="menor que">menor que</option>
@@ -67,17 +75,13 @@ function Table() {
         <input
           type="number"
           id="options"
-          name="options"
+          name="value"
           data-testid="value-filter"
-          value={ valueFilter }
-          onChange={ ({ target: { value } }) => setValueFilter(value) }
+          value={ values.filterByNumericValues.value }
+          onChange={ onChange }
         />
       </label>
-      <button
-        data-testid="button-filter"
-        type="button"
-        onClick={ handleFilter }
-      >
+      <button data-testid="button-filter" type="button" onClick={ handleFilter }>
         Filtrar
       </button>
 
