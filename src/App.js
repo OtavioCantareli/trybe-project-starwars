@@ -19,6 +19,10 @@ function App() {
     fetchData();
   }, []);
 
+  const handleChange = ({ target }) => {
+    setFilter({ filterByName: { name: target.value } });
+  };
+
   return (
     <PlanetsContext.Provider value={ data }>
       <input
@@ -26,7 +30,7 @@ function App() {
         placeholder="Filtro por nome"
         type="text"
         name="filterName"
-        onChange={ (event) => setFilter({ filterByName: { name: event.target.value } }) }
+        onChange={ handleChange }
         value={ filter.filterByName.name }
       />
       <Table />
