@@ -7,6 +7,7 @@ const url = 'https://swapi-trybe.herokuapp.com/api/planets/';
 
 function App() {
   const [data, setData] = useState([]);
+  const [filter, setFilter] = useState({ filterByName: { name: '' } });
   useEffect(() => {
     async function fetchData() {
       const results = await fetch(url).then((response) => response
@@ -20,6 +21,14 @@ function App() {
 
   return (
     <PlanetsContext.Provider value={ data }>
+      <input
+        data-testid="name-filter"
+        placeholder="Filtro por nome"
+        type="text"
+        name="filterName"
+        onChange={ (event) => setFilter({ filterByName: { name: event.target.value } }) }
+        value={ filter.filterByName.name }
+      />
       <Table />
     </PlanetsContext.Provider>
   );
