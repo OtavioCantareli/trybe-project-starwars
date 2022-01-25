@@ -3,7 +3,7 @@ import PlanetsContext from './context';
 
 function Table() {
   const data = useContext(PlanetsContext);
-  const [filter, setFilter] = useState({ filterByName: { name: '' } });
+  const [filter, setFilter] = useState('');
   return (
     <>
       <input
