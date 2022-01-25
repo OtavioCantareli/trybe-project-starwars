@@ -1,9 +1,34 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import PlanetsContext from './context';
 
 function Table() {
   const data = useContext(PlanetsContext);
   const [filter, setFilter] = useState({ filterByName: { name: '' } });
+  const [column, setColumn] = useState('population');
+  const [comparison, setComparison] = useState('maior que');
+  const [valueFilter, setValueFilter] = useState(0);
+  const [planets, setPlanets] = useState([]);
+
+  useEffect(() => {
+    setPlanets(data);
+  }, [data]);
+
+  const handleFilter = () => {
+    const VALUE = parseInt(valueFilter, 10);
+
+    const planetsFiltered = data.filter((planet) => {
+      if (comparison === 'maior que') {
+        return planet[column] > VALUE;
+      } if (comparison === 'menor que') {
+        return planet[column] < VALUE;
+      }
+
+      return planet[column] === valueFilter;
+    });
+
+    setPlanets(planetsFiltered);
+  };
+
   return (
     <>
       <input
@@ -15,14 +40,26 @@ function Table() {
       />
 
       <label htmlFor="options">
-        <select name="options" id="options" data-testid="column-filter">
+        <select
+          name="options"
+          id="options"
+          data-testid="column-filter"
+          value={ column }
+          onChange={ ({ target: { value } }) => setColumn(value) }
+        >
           <option value="population">population</option>
           <option value="orbital_period">orbital_period</option>
           <option value="diameter">diameter</option>
           <option value="rotation_period">rotation_period</option>
           <option value="surface_water">surface_water</option>
         </select>
-        <select name="options" id="options" data-testid="comparison-filter">
+        <select
+          name="options"
+          id="options"
+          data-testid="comparison-filter"
+          value={ comparison }
+          onChange={ ({ target: { value } }) => setComparison(value) }
+        >
           <option value="maior que">maior que</option>
           <option value="menor que">menor que</option>
           <option value="igual a">igual a</option>
@@ -32,10 +69,15 @@ function Table() {
           id="options"
           name="options"
           data-testid="value-filter"
-          value={ 0 }
+          value={ valueFilter }
+          onChange={ ({ target: { value } }) => setValueFilter(value) }
         />
       </label>
-      <button data-testid="button-filter" type="button">
+      <button
+        data-testid="button-filter"
+        type="button"
+        onClick={ handleFilter }
+      >
         Filtrar
       </button>
 
@@ -58,7 +100,7 @@ function Table() {
           </tr>
         </thead>
         <tbody>
-          {data
+          {planets
             .filter((dat) => dat.name.includes(filter.filterByName.name))
             .map((item, index) => (
               <tr key={ index }>
