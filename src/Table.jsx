@@ -10,7 +10,7 @@ function Table() {
         type="text"
         data-testid="name-filter"
         placeholder="Filtro por nome"
-        value={ filter }
+        value={ filter.filterByName.name }
         onChange={ ({ target }) => setFilter({ filterByName: { name: target.value } }) }
       />
 
