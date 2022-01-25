@@ -3,7 +3,7 @@ import PlanetsContext from './context';
 
 function Table() {
   const data = useContext(PlanetsContext);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState({ filterByName: { name: '' } });
   return (
     <>
       <input
@@ -13,6 +13,32 @@ function Table() {
         value={ filter }
         onChange={ (event) => setFilter(event.target.value) }
       />
+
+      <label htmlFor="options">
+        <select name="options" id="options" data-testid="column-filter">
+          <option value="population">population</option>
+          <option value="orbital_period">orbital_period</option>
+          <option value="diameter">diameter</option>
+          <option value="rotation_period">rotation_period</option>
+          <option value="surface_water">surface_water</option>
+        </select>
+        <select name="options" id="options" data-testid="comparison-filter">
+          <option value="maior que">maior que</option>
+          <option value="menor que">menor que</option>
+          <option value="igual a">igual a</option>
+        </select>
+        <input
+          type="number"
+          id="options"
+          name="options"
+          data-testid="value-filter"
+          value={ 0 }
+        />
+      </label>
+      <button data-testid="button-filter" type="button">
+        Filtrar
+      </button>
+
       <table>
         <thead>
           <tr>
