@@ -3,7 +3,7 @@ import PlanetsContext from './context';
 
 function Table() {
   const data = useContext(PlanetsContext);
-  const [filter, setFilter] = useState('');
+  const [filter, setFilter] = useState({ filterByName: { name: '' } });
   return (
     <>
       <input
@@ -11,7 +11,7 @@ function Table() {
         data-testid="name-filter"
         placeholder="Filtro por nome"
         value={ filter }
-        onChange={ (event) => setFilter(event.target.value) }
+        onChange={ ({ target }) => setFilter({ filterByName: { name: target.value } }) }
       />
 
       <label htmlFor="options">
@@ -59,7 +59,7 @@ function Table() {
         </thead>
         <tbody>
           {data
-            .filter((dat) => dat.name.includes(filter))
+            .filter((dat) => dat.name.includes(filter.filterByName.name))
             .map((item, index) => (
               <tr key={ index }>
                 <td>{item.name}</td>
