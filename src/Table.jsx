@@ -45,6 +45,10 @@ function Table() {
     setCurrentFilter((oldFilters) => [...oldFilters, filteredOptions]);
   };
 
+  const handleRemoveFilter = (item) => {
+    setCurrentFilter(currentFilter.filter((filt) => filt !== item));
+  };
+
   return (
     <>
       <input
@@ -94,12 +98,16 @@ function Table() {
       </button>
 
       {currentFilter.map((filt, index) => (
-        <>
-          <span>{filt}</span>
-          <button type="button" key={ index } data-testid="filter">
+        <span id={ filt } key={ index }>
+          {filt}
+          <button
+            type="button"
+            data-testid="filter"
+            onClick={ () => { handleRemoveFilter(filt); } }
+          >
             X
           </button>
-        </>
+        </span>
       ))}
 
       <table>
