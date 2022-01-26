@@ -15,6 +15,7 @@ function Table() {
     'rotation_period',
     'surface_water',
   ]);
+  const [currentFilter, setCurrentFilter] = useState([]);
 
   // const [values, setValues] = useState({ filterByNumericValues: [{ column: 'population', comparison: 'maior que', value: 0 }] });
 
@@ -38,6 +39,10 @@ function Table() {
     setOptions(options.filter((option) => option !== column));
 
     setPlanets(planetsFiltered);
+
+    const filteredOptions = options.filter((option) => option === column);
+
+    setCurrentFilter((oldFilters) => [...oldFilters, filteredOptions]);
   };
 
   return (
@@ -63,11 +68,6 @@ function Table() {
               {option}
             </option>
           ))}
-          {/* <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option> */}
         </select>
         <select
           name="options"
@@ -92,6 +92,15 @@ function Table() {
       <button data-testid="button-filter" type="button" onClick={ handleFilter }>
         Filtrar
       </button>
+
+      {currentFilter.map((filt, index) => (
+        <>
+          <span>{filt}</span>
+          <button type="button" key={ index } data-testid="filter">
+            X
+          </button>
+        </>
+      ))}
 
       <table>
         <thead>
