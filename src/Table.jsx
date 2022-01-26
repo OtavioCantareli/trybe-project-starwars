@@ -8,6 +8,13 @@ function Table() {
   const [comparison, setComparison] = useState('maior que');
   const [valueFilter, setValueFilter] = useState(0);
   const [planets, setPlanets] = useState([]);
+  const [options, setOptions] = useState([
+    'population',
+    'orbital_period',
+    'diameter',
+    'rotation_period',
+    'surface_water',
+  ]);
 
   // const [values, setValues] = useState({ filterByNumericValues: [{ column: 'population', comparison: 'maior que', value: 0 }] });
 
@@ -21,12 +28,14 @@ function Table() {
     const planetsFiltered = data.filter((planet) => {
       if (comparison === 'maior que') {
         return planet[column] > VALUE;
-      } if (comparison === 'menor que') {
+      }
+      if (comparison === 'menor que') {
         return planet[column] < VALUE;
       }
-
       return planet[column] === valueFilter;
     });
+
+    setOptions(options.filter((option) => option !== column));
 
     setPlanets(planetsFiltered);
   };
@@ -49,11 +58,16 @@ function Table() {
           value={ column }
           onChange={ ({ target: { value } }) => setColumn(value) }
         >
-          <option value="population">population</option>
+          {options.map((option) => (
+            <option key={ option } value={ option }>
+              {option}
+            </option>
+          ))}
+          {/* <option value="population">population</option>
           <option value="orbital_period">orbital_period</option>
           <option value="diameter">diameter</option>
           <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          <option value="surface_water">surface_water</option> */}
         </select>
         <select
           name="options"
@@ -75,11 +89,7 @@ function Table() {
           onChange={ ({ target: { value } }) => setValueFilter(value) }
         />
       </label>
-      <button
-        data-testid="button-filter"
-        type="button"
-        onClick={ handleFilter }
-      >
+      <button data-testid="button-filter" type="button" onClick={ handleFilter }>
         Filtrar
       </button>
 
