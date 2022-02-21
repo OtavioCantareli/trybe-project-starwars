@@ -17,8 +17,6 @@ function Table() {
   ]);
   const [currentFilter, setCurrentFilter] = useState([]);
 
-  // const [values, setValues] = useState({ filterByNumericValues: [{ column: 'population', comparison: 'maior que', value: 0 }] });
-
   useEffect(() => {
     setPlanets(data);
   }, [data]);
